@@ -5,58 +5,34 @@ class Board extends Component {
     var that = this;      
     var color = (par) => (par === 1) ? "black" :"white";
     var stoneSize = 26;
+    var squares = [];
+    for (var i = 0; i <= 18; i++) {
+      for (var j = 0; j <= 18; j++) {
+          squares.push(<g transform={"translate("+i+","+j+")"}>
+                        <svg>
+                          <rect height="1" width="1" y="0" x="0" stroke-width=".028564" fill="#ffbd13"/>
+                        </svg>
+                      </g>);
+      }
+    }
     if (that.props.pieces){
       return (
         <div>
-          <div>
-<svg height="35" width="35" viewBox="0 0 9.2604165 9.2604169">
-
-<g>
-<svg>
-	<rect height="9.2604" width="9.2604" y="4.614e-8" x="0" fill="#ffbd13"/>
-	<path d="m4.6295-0.0011599 0.00146 9.2627" stroke="#000" stroke-width=".26458px" fill="none"/>
-	<path d="m9.2616 4.6295-9.2627 0.00146" stroke="#000" stroke-width=".26458px" fill="none"/>
-</svg>
-</g>
-
-
-</svg>
-  
-
-        </div>
-          
-          <svg height={stoneSize*18} width={stoneSize*18}>
-          <rect width="100%" height="100%" fill="#ffc676ff"/>
-          {
-              that.props.pieces.map(function(boardRow, row)
-              {
-                return boardRow.map(function(piece, col)
-                  {
-                    return <rect 
-                      onClick={() => that.props.actions.getBoard({row, col})}
-                      style={{stroke:"#000000"}} 
-                      width={stoneSize} 
-                      height={stoneSize} 
-                      x={stoneSize*col} 
-                      y={stoneSize*row} 
-                      fill={color(0)} />
-                  }
-                );
-              })
-            }
+            <svg height="1000" width="1000" viewBox="0 0 18 18">
+            {squares}
             {
               that.props.pieces.map(function(boardRow, row)
               {
                 return boardRow.map(function(piece, col)
                   {
                     if (piece === 0) return;
-                    return <circle 
-                      style={{stroke:"#000000"}} 
-                      cx={stoneSize*col+(stoneSize/2)} 
-                      cy={stoneSize*row+(stoneSize/2)} 
-                      r={stoneSize/2.3}
-                      fill={color(piece)} />
-                  }
+                    return <g transform={"translate("+col+","+row+")"}>
+                            <svg>
+                              <circle stroke-width=".035006" fill-rule="evenodd" cy=".52" cx=".52" r=".4" fill="#333333"/>
+                              <circle stroke-width=".035006" fill-rule="evenodd" cy=".5" cx=".5" r=".4" fill="#F9F9F9"/>
+                            </svg>
+                          </g>
+              }
                 );
               })
             }
