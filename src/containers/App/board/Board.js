@@ -7,6 +7,7 @@ class Board extends Component {
   render() {
     var that = this;      
     var squares = [];
+    //Change BoardSlot component to draw whole board and get rid of ugly border lines
     for (var i = 0; i <= 18; i++) {
       for (var j = 0; j <= 18; j++) {
           squares.push(<BoardSlot col={i} row={j} />);
