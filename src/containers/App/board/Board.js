@@ -10,7 +10,9 @@ class Board extends Component {
       for (var j = 0; j <= 18; j++) {
           squares.push(<g transform={"translate("+i+","+j+")"}>
                         <svg>
-                          <rect height="1" width="1" y="0" x="0" stroke-width=".028564" fill="#ffbd13"/>
+                          <rect height="1" width="1" y="0" x="0" fill="#ffbd13"/>
+                          <path stroke="#000" strokeWidth=".100" d="m0.5 0v1" />
+                          <path stroke="#000" strokeWidth=".100"  d="m1 0.5h-1" />
                         </svg>
                       </g>);
       }
@@ -28,8 +30,8 @@ class Board extends Component {
                     if (piece === 0) return;
                     return <g transform={"translate("+col+","+row+")"}>
                             <svg>
-                              <circle stroke-width=".035006" fill-rule="evenodd" cy=".52" cx=".52" r=".4" fill="#333333"/>
-                              <circle stroke-width=".035006" fill-rule="evenodd" cy=".5" cx=".5" r=".4" fill="#F9F9F9"/>
+                              <circle strokeWidth=".035006" cy=".52" cx=".52" r=".4" fill="#333333"/>
+                              <circle strokeWidth=".035006" cy=".5" cx=".5" r=".4" fill="#F9F9F9"/>
                             </svg>
                           </g>
               }
