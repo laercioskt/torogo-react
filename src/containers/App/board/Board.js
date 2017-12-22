@@ -16,7 +16,8 @@ class Board extends Component {
     }
     return (
       <div>
-          <svg height="1000" width="1000" viewBox="0 0 18 18">
+          <span>FOOBAR</span>
+          <svg height="800" width="100%" viewBox="0 0 18 18" preserveAspectRatio="xMinYMin meet">
              <rect height="18" width="18" y="0" x="0" fill="#ffbd13"/>
             {svgFragments}
           </svg>
