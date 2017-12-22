@@ -4,29 +4,22 @@ import BoardSlot from './BoardSlot';
 
 
 class Board extends Component {
-  render() {
-    var that = this;      
-    var squares = [];
-    //Change BoardSlot component to draw whole board and get rid of ugly border lines
+  render() {    
+    var svgFragments = [];
     for (var i = 0; i <= 18; i++) {
       for (var j = 0; j <= 18; j++) {
-          squares.push(<BoardSlot col={i} row={j} />);
+        svgFragments.push(<BoardSlot col={i} row={j} />);
+        var piece = this.props.pieces.getIn([i,j]);
+        if (piece === 1) svgFragments.push( <BoardPiece col={i} row={j} color="#F9F9F9" />);
+        if (piece === 2) svgFragments.push( <BoardPiece col={i} row={j} color="#222222" />);
       }
     }
     return (
       <div>
           <svg height="1000" width="1000" viewBox="0 0 18 18">
-          {squares}
-          {
-            that.props.pieces.map(function(boardRow, row){
-              return boardRow.map(function(piece, col){
-                  if (piece === 0) return;
-                  if (piece === 1) return <BoardPiece col={col} row={row} color="#F9F9F9" />;
-                  return <BoardPiece col={col} row={row} color="#222222" />;
-              });
-            })
-          }
-        </svg>
+             <rect height="18" width="18" y="0" x="0" fill="#ffbd13"/>
+            {svgFragments}
+          </svg>
       </div>
     );
   }

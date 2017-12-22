@@ -1,3 +1,38 @@
+### Notas da apresentação
+
+dificuldades de desenhar com css (círculo é um retangulo arredondado com ratio 50%)
+
+SVG é um xml
+
+SVG liberdade de escolha de coordenadas
+
+inserindo svg dentro de svg com grupos
+
+svg viewport coordinates
+
+transformações - translate group
+
+inserindo svg 
+
+circles, rects
+
+paths (turtle)
+
+difculdades com inkscape, eixo y invertido, svg cheio
+
+react classes nao podem ter dashes
+
+ferramenta para limpar svg
+
+scour -i rect.svg -o tileN.svg --enable-viewboxing --enable-id-stripping --enable-comment-stripping --shorten-ids --indent=none
+
+animate
+
+go - toroidal go
+
+demo
+
+
 # Create react redux app
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).<br>
 The project includes extra redux packages and improved file structure.
