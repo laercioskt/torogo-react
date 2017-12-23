@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { getAPIData, getBoard, moveBoard } from './actions';
+import { getAPIData, play, moveBoard } from './actions';
 import { selectApiData, selectPieces, selectBoardPosition } from './selectors';
 
 import Board from './board/Board.js';
@@ -38,7 +38,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ getAPIData, getBoard, moveBoard }, dispatch),
+  actions: bindActionCreators({ getAPIData, play, moveBoard }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

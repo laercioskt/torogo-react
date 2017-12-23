@@ -6,7 +6,7 @@ import {
   GET_API_DATA_ERROR,
 } from './constants';
 
-export const getBoard = (position) => ({
+export const play = (position) => ({
   type: BOARD,
   data: position,
 });
