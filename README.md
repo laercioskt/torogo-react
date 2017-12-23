@@ -1,5 +1,7 @@
 ### Notas da apresentação
 
+o react odeia a tag style :(
+
 dificuldades de desenhar com css (círculo é um retangulo arredondado com ratio 50%)
 
 SVG é um xml
