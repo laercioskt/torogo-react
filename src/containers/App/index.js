@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { getAPIData, getBoard } from './actions';
-import { selectApiData, selectPieces } from './selectors';
+import { getAPIData, getBoard, moveBoard } from './actions';
+import { selectApiData, selectPieces, selectBoardPosition } from './selectors';
 
 import Board from './board/Board.js';
 
@@ -16,7 +16,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <Board pieces={this.props.pieces} actions={this.props.actions} />
+        <Board pieces={this.props.pieces} actions={this.props.actions} boardPosition={this.props.boardPosition} />
       </div>
     );
   }
@@ -34,10 +34,11 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
   apiData: selectApiData(state),
   pieces: selectPieces(state),
+  boardPosition: selectBoardPosition(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ getAPIData, getBoard }, dispatch),
+  actions: bindActionCreators({ getAPIData, getBoard, moveBoard }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,5 +1,6 @@
 import {
   BOARD,
+  MOVE_BOARD,
   GET_API_DATA,
   GET_API_DATA_LOADED,
   GET_API_DATA_ERROR,
@@ -8,6 +9,11 @@ import {
 export const getBoard = (position) => ({
   type: BOARD,
   data: position,
+});
+
+export const moveBoard = (direction) => ({
+  type: MOVE_BOARD,
+  data: direction,
 });
 
 export const getAPIData = () => ({

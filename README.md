@@ -1,6 +1,8 @@
 ### TODO
 
 id para os componentes
+tirar indireções
+usar flow
 
 ### Notas da apresentação
 
