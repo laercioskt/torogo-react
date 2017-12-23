@@ -6,12 +6,7 @@ import { connect } from 'react-redux';
 import { getAPIData, getBoard } from './actions';
 import { selectApiData, selectPieces } from './selectors';
 
-import logo from './images/logo.svg';
 import Board from './board/Board.js';
-
-const getMyIp = (apiData) => (
-  (apiData && apiData.origin) && apiData.origin.split(', ')[1]
-);
 
 class App extends Component {
   componentWillMount() {
@@ -19,12 +14,6 @@ class App extends Component {
   }
 
   render() {
-    var oquemostrar = <span>estou esperando</span>
-    var mostraIP = 
-        <p className="app-intro">
-          Your IP is: {getMyIp(this.props.apiData)}
-        </p>
-    if (!this.props.apiDataLoading) oquemostrar = mostraIP
     return (
       <div className="app">
         <Board pieces={this.props.pieces} actions={this.props.actions} />

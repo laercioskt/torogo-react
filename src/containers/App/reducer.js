@@ -1,4 +1,4 @@
-import { fromJS, List, setIn } from 'immutable';
+import { fromJS } from 'immutable';
 
 import {
   BOARD,
