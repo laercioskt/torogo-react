@@ -8,7 +8,7 @@ class Board extends Component {
     var svgFragments = [];
     for (var i = 0; i <= 18; i++) {
       for (var j = 0; j <= 18; j++) {
-        svgFragments.push(<BoardSlot col={i} row={j} />);
+        svgFragments.push(<BoardSlot col={i} row={j} actions={this.props.actions} />);
         var piece = this.props.pieces.getIn([i,j]);
         if (piece === 1) svgFragments.push( <BoardPiece col={i} row={j} color="#F9F9F9" />);
         if (piece === 2) svgFragments.push( <BoardPiece col={i} row={j} color="#222222" />);

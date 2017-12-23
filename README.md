@@ -1,3 +1,7 @@
+### TODO
+
+id para os componentes
+
 ### Notas da apresentação
 
 o react odeia a tag style :(

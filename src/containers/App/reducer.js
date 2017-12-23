@@ -35,7 +35,7 @@ const initialState = fromJS({
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case BOARD:
-      return state.setIn(["pieces", action.data.row, action.data.col], 1);
+      return state.setIn(["pieces", action.data.col, action.data.row], 1);
     case GET_API_DATA:
       return state
         .set('apiDataLoading', true)
