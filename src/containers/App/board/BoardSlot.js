@@ -9,12 +9,9 @@ class BoardSlot extends Component {
     var rowP = row < 0 ? length + row % length : row % length;
     var position = {row: rowP, col: colP};
     var play = () => this.props.actions.play(position);
-    return <g transform={"translate("+col+","+row+")"}>
-      <svg onClick={play} >
-        <rect height="1" width="1" y="0" x="0" fill="#ffbd13" />
-        <path stroke="#000" strokeWidth=".100" d="m0.5 -0.5v2" />
-        <path stroke="#000" strokeWidth=".100"  d="m1.5 0.5h-2" />
-      </svg>
+
+    return <g transform={"translate("+col+","+row+")"}  onClick={play}>
+      <use href="#boardSlot"/>
     </g>;
   }
 }

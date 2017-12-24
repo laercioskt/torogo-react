@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BoardPiece from './BoardPiece';
 import BoardSlot from './BoardSlot';
+import Logo from './Logo';
 
 
 class Board extends Component {
@@ -14,8 +15,7 @@ render() {
         var col = i < 0 ? length + i % length : i % length; 
         var row = j < 0 ? length + j % length : j % length;
         var piece = this.props.pieces.getIn([row, col]);
-        if (piece === 1) svgFragments.push( <BoardPiece col={i} row={j} color="#F9F9F9" />);
-        if (piece === 2) svgFragments.push( <BoardPiece col={i} row={j} color="#222222" />);
+        if (piece != 0) svgFragments.push( <BoardPiece col={i} row={j} pieceType={piece} />);
       }
     }
 
@@ -24,6 +24,23 @@ render() {
     return (
       <div className="noselect" >
         <svg height="600" width="100%" viewBox={"-1 -1 "+(length+2)+" "+ (length+2)} preserveAspectRatio="xMedYMin meet">
+          <defs>
+            <g id="blackPiece">
+                <circle strokeWidth=".035006" cy=".52" cx=".52" r=".4" fill="#333333"/>
+                <circle strokeWidth=".035006" cy=".5" cx=".5" r=".4" fill="#222222"/>
+                <Logo color="#333333"/>
+            </g>
+            <g id="whitePiece">
+                <circle strokeWidth=".035006" cy=".52" cx=".52" r=".4" fill="#333333"/>
+                <circle strokeWidth=".035006" cy=".5" cx=".5" r=".4" fill="#F9F9F9"/>
+                <Logo color="#F9F9F9"/>
+            </g>
+            <g id="boardSlot">
+              <rect strokeWidth="0" height="1" width="1" y="0" x="0" fill="#ffbd13" />
+              <path stroke="#000" strokeWidth=".100" d="m0.5 0v1.1" />
+              <path stroke="#000" strokeWidth=".100"  d="m0 0.5h1.1" />
+            </g>
+          </defs>
           <g transform={"translate("+x+","+y+")"} >
             <rect height={length} width={length} y="0" x="0" fill="#ffbd13"/>
             {svgFragments}
