@@ -44,6 +44,8 @@ go - toroidal go
 
 demo
 
+IDEA: move pieces instead of rendering all
+
 
 # Create react redux app
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).<br>
