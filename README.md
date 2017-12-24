@@ -26,13 +26,17 @@ circles, rects
 
 paths (turtle)
 
-difculdades com inkscape, eixo y invertido, svg cheio
+difculdades com inkscape, eixo y invertido, 
+
+svg mostrando coisas fora do viewbox por causa do witdth 100%
 
 react classes nao podem ter dashes
 
 ferramenta para limpar svg
 
 scour -i rect.svg -o tileN.svg --enable-viewboxing --enable-id-stripping --enable-comment-stripping --shorten-ids --indent=none
+
+performance
 
 animate
 
