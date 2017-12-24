@@ -25,7 +25,7 @@ const initialState = fromJS({
   apiDataLoaded: null,
   apiDataError: null,
   boardPosition: {x: 1, y: 1},
-  pieces: matrixGenerator(8),
+  pieces: matrixGenerator(18),
 });
 
 const appReducer = (state = initialState, action) => {

@@ -9,8 +9,11 @@ class Board extends Component {
 render() {    
     var svgFragments = [];
     var length = this.props.pieces.size;
-    for (var i = length * -1; i <= length * 2; i++) {
-      for (var j = length * -1; j <= length * 2; j++) {
+    var leftBorder =  (length-Math.ceil(length/4)) * -1;
+    var rightBorder = (length-Math.ceil(length/4)) * 2;
+    console.log({leftBorder, rightBorder});
+    for (var i = leftBorder; i <= rightBorder; i++) {
+      for (var j = leftBorder; j <= rightBorder; j++) {
         svgFragments.push(<BoardSlot col={i} row={j} actions={this.props.actions} boardSize={length} />);
         var col = i < 0 ? length + i % length : i % length; 
         var row = j < 0 ? length + j % length : j % length;
@@ -42,7 +45,7 @@ render() {
             </g>
           </defs>
           <g transform={"translate("+x+","+y+")"} >
-            <rect height={length} width={length} y="0" x="0" fill="#ffbd13"/>
+            <rect height={length*3} width={length*3} y={-length} x={-length} fill="#ffbd13"/>
             {svgFragments}
           </g>
           <g>
