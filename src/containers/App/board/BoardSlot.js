@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class BoardSlot extends Component {
+class BoardSlot extends PureComponent {
   render() {
     var col = this.props.col;
     var row = this.props.row;
@@ -12,6 +12,7 @@ class BoardSlot extends Component {
 
     return <g transform={"translate("+col+","+row+")"} onClick={play}> <use href="#boardSlot"/> </g>;
   }
+
 }
 
 export default BoardSlot;

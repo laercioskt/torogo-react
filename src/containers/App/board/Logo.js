@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class Logo extends Component {
+class Logo extends PureComponent {
 
     invertColor(hexTripletColor) {
         var color = hexTripletColor;
@@ -34,6 +34,11 @@ class Logo extends Component {
               </svg>
           </g>;
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return false
+  }
+
 }
 
 export default Logo;

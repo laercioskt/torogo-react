@@ -6,13 +6,10 @@
     "history": "^4.7.2",
     "immutable": "^3.8.1",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.0",
-    "react-router-redux": "^5.0.0-alpha.6",
-    "redux": "^3.7.2",
-    "redux-saga": "^0.15.6"
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "eslint": "4.5.0",

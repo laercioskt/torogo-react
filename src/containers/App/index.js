@@ -1,18 +1,19 @@
+import {
+  BOARD,
+  MOVE_BOARD,
+} from './constants';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { getAPIData, play, moveBoard } from './actions';
-import { selectApiData, selectPieces, selectBoardPosition } from './selectors';
+import { selectPieces, selectBoardPosition } from './selectors';
 
 import Board from './board/Board.js';
 
 class App extends Component {
-  componentWillMount() {
-    this.props.actions.getAPIData();
-  }
-
+  
   render() {
     return (
       <div className="app">
@@ -32,13 +33,21 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  apiData: selectApiData(state),
   pieces: selectPieces(state),
   boardPosition: selectBoardPosition(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ getAPIData, play, moveBoard }, dispatch),
+  actions: bindActionCreators({ 
+    play:(position) => ({
+      type: BOARD,
+      data: position,
+    }), 
+    moveBoard:(direction) => ({
+      type: MOVE_BOARD,
+      data: direction,
+    }) 
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

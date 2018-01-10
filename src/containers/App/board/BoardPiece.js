@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 
-class BoardPiece extends Component {
+class BoardPiece extends PureComponent {
   render() {
     var col = this.props.col;
     var row = this.props.row;
@@ -10,6 +10,7 @@ class BoardPiece extends Component {
       return <g transform={"translate("+col+","+row+")"}> <use href="#whitePiece"/> </g>;
     return <g transform={"translate("+col+","+row+")"}> <use href="#blackPiece"/> </g>;
   }
+
 }
 
 export default BoardPiece;
