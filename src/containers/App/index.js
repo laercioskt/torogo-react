@@ -8,8 +8,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { selectPieces, selectBoardPosition } from './selectors';
-
 import Board from './board/Board.js';
 
 class App extends Component {
@@ -33,8 +31,8 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  pieces: selectPieces(state),
-  boardPosition: selectBoardPosition(state),
+    pieces: state.get('pieces'),
+    boardPosition: state.get('boardPosition'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
