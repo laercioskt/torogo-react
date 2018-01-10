@@ -5,7 +5,6 @@
   "dependencies": {
     "history": "^4.7.2",
     "immutable": "^3.8.1",
-    "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",

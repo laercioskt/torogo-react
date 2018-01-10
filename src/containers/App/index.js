@@ -4,7 +4,6 @@ import {
 } from './constants';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -20,15 +19,6 @@ class App extends Component {
     );
   }
 }
-
-App.defaultProps = {
-  apiData: {},
-};
-
-App.propTypes = {
-  actions: PropTypes.object.isRequired,
-  apiData: PropTypes.object,
-};
 
 const mapStateToProps = (state) => ({
     pieces: state.get('pieces'),
