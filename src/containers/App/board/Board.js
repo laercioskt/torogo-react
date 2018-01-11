@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import BoardPiece from './BoardPiece';
 import BoardSlot from './BoardSlot';
-import Logo from './Logo';
 import Defs from './Defs';
 
 
@@ -19,7 +18,7 @@ render() {
         var col = i < 0 ? length + i % length : i % length; 
         var row = j < 0 ? length + j % length : j % length;
         var piece = this.props.pieces.getIn([row, col]);
-        if (piece != 0) svgFragments.push( <BoardPiece col={i} row={j} pieceType={piece} />);
+        if (piece !== 0) svgFragments.push( <BoardPiece col={i} row={j} pieceType={piece} />);
       }
     }
 

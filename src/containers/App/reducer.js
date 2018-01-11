@@ -6,9 +6,9 @@ import {
 } from './constants';
 
 const matrixGenerator = (size) => {
-  var results = new Array();
+  var results = [];
   for (let i = 0; i < size; i++) {
-    var row = new Array();
+    var row = [];
     for (let j = 0; j < size; j++)
       row.push(Math.floor((Math.random() * 3)));
     results.push(row);
