@@ -3,6 +3,8 @@ import { fromJS } from 'immutable';
 import {
   BOARD,
   MOVE_BOARD,
+  BLACK_TURN,
+  WHITE_TURN
 } from './constants';
 
 const matrixGenerator = (size) => {
@@ -18,6 +20,7 @@ const matrixGenerator = (size) => {
 
 const initialState = fromJS({
   boardPosition: {x: 1, y: 1},
+  gameState : BLACK_TURN,
   pieces: matrixGenerator(9),
 });
 
@@ -38,7 +41,12 @@ const appReducer = (state = initialState, action) => {
         });
       });
     case BOARD:
-      return state.setIn(["pieces", action.data.row, action.data.col], 1);
+      if(state.get('gameState') === BLACK_TURN){
+          return state.setIn(["pieces", action.data.row, action.data.col], 1).set("gameState", WHITE_TURN);
+      }
+      if(state.get('gameState') === WHITE_TURN){
+          return state.setIn(["pieces", action.data.row, action.data.col], 2).set("gameState", BLACK_TURN);
+      }
     default:
       return state;
   }
