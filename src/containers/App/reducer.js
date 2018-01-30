@@ -33,9 +33,9 @@ const truePosition = (pieces, row, col) => {
     var truePos = {row, col};
 
     if (col < 0) truePos.col = size + col;
-    if (col > size) truePos = size - col;
-    if (row < 0) truePos = size + row;
-    if (row > size) truePos = size - row;
+    if (col >= size) truePos.col = size - col;
+    if (row < 0) truePos.row = size + row;
+    if (row >= size) truePos.row = size - row;
 
     return truePos;
 }
@@ -44,76 +44,70 @@ const posToSelector = (pos) => [pos.row, pos.col];
 
 const comparePos = (p1, p2) => p1.row === p2.row && p1.col === p2.col;
 
-const countLiberties = (pieces, piecesAlreadyChecked, currentPiecePosition, color) => {
-    var size = pieces.size;
+const countLiberties = (pieces, piecesAlreadyChecked, currentPiecePosition, color, groupOut) => {
 
+    if(piecesAlreadyChecked.find(p => comparePos(p, currentPiecePosition))){
+        return 0;
+    }
+    
     var col = currentPiecePosition.col;
     var row = currentPiecePosition.row;
     piecesAlreadyChecked.push(currentPiecePosition);
 
+    var pieceColor = pieces.getIn(posToSelector(currentPiecePosition));
+
+    if(pieceColor === 0){
+        return 1;
+    }
+
+    if(pieceColor !== 0 && pieceColor !== color){
+        return 0;
+    }
+
+    groupOut.push(currentPiecePosition);
     var left =  truePosition(pieces, row, col -1);
     var right = truePosition(pieces, row, col +1);
-    var up = truePosition(pieces, row -1, col);
-    var down = truePosition(pieces, row + 1, col);
+    var up =    truePosition(pieces, row -1, col);
+    var down =  truePosition(pieces, row + 1, col);
 
-    var upPiece = pieces.getIn(posToSelector(up));
-    var downPiece = pieces.getIn(posToSelector(down));
-    var leftPiece = pieces.getIn(posToSelector(left));
-    var rightPiece = pieces.getIn(posToSelector(right));
+    var othersSum = countLiberties(pieces, piecesAlreadyChecked, left , color, groupOut) +
+                    countLiberties(pieces, piecesAlreadyChecked, up   , color, groupOut) +
+                    countLiberties(pieces, piecesAlreadyChecked, right, color, groupOut) +
+                    countLiberties(pieces, piecesAlreadyChecked, down , color, groupOut);
 
-    var liberties = 0;
+    return othersSum;
+}
 
-    console.log(piecesAlreadyChecked)
-    if( piecesAlreadyChecked.find(p => comparePos(p, up) ) === undefined ){
-      if ( upPiece === color ){
-          liberties += countLiberties(pieces, piecesAlreadyChecked, up, color);
-      }
-      if( upPiece === 0 ){
-          liberties += 1;
-          piecesAlreadyChecked.push(up);
-      }
-      if(upPiece != color && upPiece != 0){
-          piecesAlreadyChecked.push(up);
-      }
-    }
-    if( piecesAlreadyChecked.find(p => comparePos(p, down) ) === undefined ){
-        if ( downPiece === color ){
-            liberties += countLiberties(pieces, piecesAlreadyChecked, down, color);
-        }
-        if( downPiece === 0 ){
-            liberties += 1;
-            piecesAlreadyChecked.push(down);
-        }
-        if(downPiece != color && downPiece != 0){
-            piecesAlreadyChecked.push(down);
-        }
-    }
-    if( piecesAlreadyChecked.find(p => comparePos(p, left) ) === undefined ){
-        if ( leftPiece === color ){
-            liberties += countLiberties(pieces, piecesAlreadyChecked, left, color);
-        }
-        if( leftPiece === 0 ){
-            liberties += 1;
-            piecesAlreadyChecked.push(left);
-        }
-        if(leftPiece != color && leftPiece != 0){
-            piecesAlreadyChecked.push(left);
-        }
-    }
-    if( piecesAlreadyChecked.find(p => comparePos(p, right) ) === undefined ){
-        if ( rightPiece === color ){
-            liberties += countLiberties(pieces, piecesAlreadyChecked, right, color);
-        }
-        if( rightPiece === 0 ){
-            liberties += 1;
-            piecesAlreadyChecked.push(right);
-        }
-        if(rightPiece != color && rightPiece != 0){
-            piecesAlreadyChecked.push(right);
-        }
-    }
+const getGroupToKill= (state, color, pos) => {
+  let pieces = state.get("pieces");
+  let piecesToKill = [];
+  let row = pos.row;
+  let col = pos.col;
 
-    return liberties;    
+    if(state.getIn(["pieces", pos.row, pos.col]) === color){
+    let group = [];
+    let libs = countLiberties(pieces, [], truePosition(pieces, row, col), color, group);
+    if(libs === 0){
+      return group;
+    }
+  }
+
+  return [];
+}
+
+const getPiecesToKill = (state, color, pos) => {
+  let pieces = state.get("pieces");
+  let piecesToKill = [];
+
+  var row = pos.row;
+  var col = pos.col;
+
+  piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row - 1, col : pos.col     }));
+  piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row + 1, col : pos.col     }));
+  piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row    , col : pos.col - 1 }));
+  piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row    , col : pos.col + 1 }));
+
+  return piecesToKill;
 }
 
 const appReducer = (state = initialState, action) => {
@@ -121,64 +115,38 @@ const appReducer = (state = initialState, action) => {
     case MOVE_BOARD:
         var size = state.get('pieces').size;
         return state.update('boardPosition', (boardPosition) => {
-        var newBoardPosition = boardPosition.update('x', (x) => {
-          if (x > (size/2)) x = x - size;
-          if (x < (size/2)*-1) x = x + size;
-          return x + action.data.x;
+          var newBoardPosition = boardPosition.update('x', (x) => {
+            if (x > (size/2)) x = x - size;
+            if (x < (size/2)*-1) x = x + size;
+            return x + action.data.x;
+          });
+          return newBoardPosition.update('y', (y) => {
+            if (y >  (size/2)) y = y - size;
+            if (y < (size/2)*-1) y = y + size;
+            return y + action.data.y;
+          });
         });
-        return newBoardPosition.update('y', (y) => {
-          if (y >  (size/2)) y = y - size;
-          if (y < (size/2)*-1) y = y + size;
-          return y + action.data.y;
-        });
-      });
+      break;
     case BOARD:
-      if(state.getIn(["pieces", action.data.row, action.data.col]) != 0){
+      let row = action.data.row;
+      let col = action.data.col;
+
+      if(state.getIn(["pieces", row, col]) !== 0){
           return state;
       }
       if(state.get('gameState') === BLACK_TURN){
-          var stateAfterSet = state.setIn(["pieces", action.data.row, action.data.col], BLACK_PIECE);
-          var pieces = stateAfterSet.get("pieces");
-          if(state.getIn(["pieces", action.data.row - 1, action.data.col]) === WHITE_PIECE){
-              console.log("libertiesup");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), WHITE_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row + 1, action.data.col]) === WHITE_PIECE){
-              console.log("libertiesdown");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), WHITE_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row , action.data.col -1 ]) === WHITE_PIECE){
-              console.log("libertiesleft");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), WHITE_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row, action.data.col + 1]) === WHITE_PIECE){
-              console.log("libertiesright");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), WHITE_PIECE));
-          }
-          return stateAfterSet.set("gameState", WHITE_TURN);
+        let stateAfterSet = state.setIn(["pieces", row, col], BLACK_PIECE);
+        let toKill = getPiecesToKill(stateAfterSet, WHITE_PIECE, {row, col});
+        toKill.forEach(p => stateAfterSet = stateAfterSet.setIn(["pieces", p.row, p.col],0 ));
+        return stateAfterSet.set("gameState", WHITE_TURN);
       }
       if(state.get('gameState') === WHITE_TURN){
-          var stateAfterSet = state.setIn(["pieces", action.data.row, action.data.col], WHITE_PIECE);
-          var pieces = stateAfterSet.get("pieces");
-          if(state.getIn(["pieces", action.data.row - 1, action.data.col]) === BLACK_PIECE){
-              console.log("libertiesup");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), BLACK_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row + 1, action.data.col]) === BLACK_PIECE){
-              console.log("libertiesdown");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), BLACK_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row , action.data.col -1 ]) === BLACK_PIECE){
-              console.log("libertiesleft");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), BLACK_PIECE));
-          }
-          if(state.getIn(["pieces", action.data.row, action.data.col + 1]) === BLACK_PIECE){
-              console.log("libertiesright");
-              console.log(countLiberties(pieces, [], truePosition(pieces, action.data.row - 1, action.data.col), BLACK_PIECE));
-          }
-          return stateAfterSet.set("gameState", BLACK_TURN);
-
+        let stateAfterSet = state.setIn(["pieces", action.data.row, action.data.col], WHITE_PIECE);
+        let toKill = getPiecesToKill(stateAfterSet, BLACK_PIECE, {row, col});
+        toKill.forEach(p => stateAfterSet = stateAfterSet.setIn(["pieces", p.row, p.col],0 ));
+        return stateAfterSet.set("gameState", BLACK_TURN);
       }
+      break;
     default:
       return state;
   }
