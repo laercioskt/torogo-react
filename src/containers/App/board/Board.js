@@ -11,7 +11,6 @@ render() {
     var length = this.props.pieces.size;
     var leftBorder =  length * -1;
     var rightBorder = length * 2;
-    console.log({leftBorder, rightBorder});
     for (var i = leftBorder; i <= rightBorder; i++) {
       for (var j = leftBorder; j <= rightBorder; j++) {
         svgFragments.push(<BoardSlot col={i} row={j} actions={this.props.actions} boardSize={length} />);
