@@ -15,7 +15,6 @@ const matrixGenerator = (size) => {
     var row = [];
     for (let j = 0; j < size; j++)
       row.push(0);
-//      row.push(Math.floor((Math.random() * 3)));
     results.push(row);
   }
   return results;
@@ -80,11 +79,10 @@ const countLiberties = (pieces, piecesAlreadyChecked, currentPiecePosition, colo
 
 const getGroupToKill= (state, color, pos) => {
   let pieces = state.get("pieces");
-  let piecesToKill = [];
   let row = pos.row;
   let col = pos.col;
 
-    if(state.getIn(["pieces", pos.row, pos.col]) === color){
+  if(state.getIn(["pieces", pos.row, pos.col]) === color){
     let group = [];
     let libs = countLiberties(pieces, [], truePosition(pieces, row, col), color, group);
     if(libs === 0){
@@ -96,11 +94,7 @@ const getGroupToKill= (state, color, pos) => {
 }
 
 const getPiecesToKill = (state, color, pos) => {
-  let pieces = state.get("pieces");
   let piecesToKill = [];
-
-  var row = pos.row;
-  var col = pos.col;
 
   piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row - 1, col : pos.col     }));
   piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row + 1, col : pos.col     }));
@@ -108,6 +102,22 @@ const getPiecesToKill = (state, color, pos) => {
   piecesToKill = piecesToKill.concat(getGroupToKill(state, color, {row:pos.row    , col : pos.col + 1 }));
 
   return piecesToKill;
+}
+
+const isSuicidalMovement = (state, pos) => {
+  let color = state.get('gameState') === WHITE_TURN ? WHITE_PIECE : BLACK_PIECE;
+  let row = pos.row;
+  let col = pos.col;
+  
+  let stateAfterSet = state.setIn(["pieces", row, col], color);
+  let selfKilledGroup = getGroupToKill(stateAfterSet, color, {row, col});
+  let opponentGroupToKill = getPiecesToKill(stateAfterSet, getOpponentColor(color), {row, col});
+
+  return selfKilledGroup.length !== 0 && opponentGroupToKill.length === 0;
+}
+
+const getOpponentColor = (color) => {
+  return color === WHITE_PIECE ? BLACK_PIECE : WHITE_PIECE;
 }
 
 const appReducer = (state = initialState, action) => {
@@ -132,7 +142,11 @@ const appReducer = (state = initialState, action) => {
       let col = action.data.col;
 
       if(state.getIn(["pieces", row, col]) !== 0){
-          return state;
+        return state;
+      }
+      if (isSuicidalMovement(state, {row, col})){
+        console.log(`Suicidal movement at ${row} ${col}`);
+        return state;
       }
       if(state.get('gameState') === BLACK_TURN){
         let stateAfterSet = state.setIn(["pieces", row, col], BLACK_PIECE);

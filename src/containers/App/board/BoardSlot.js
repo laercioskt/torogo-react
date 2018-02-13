@@ -10,7 +10,7 @@ class BoardSlot extends PureComponent {
     var position = {row: rowP, col: colP};
     var play = () => this.props.actions.play(position);
 
-    return <g transform={"translate("+col+","+row+")"} onClick={play}> <use href="#boardSlot"/> </g>;
+    return <g transform={`translate(${col},${row})`} onClick={play}> <use href="#boardSlot"/> </g>;
   }
 
 }

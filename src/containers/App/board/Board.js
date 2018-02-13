@@ -25,9 +25,9 @@ render() {
     var y = this.props.boardPosition.getIn("y");
     return (
       <div className="noselect" >
-        <svg height="600" width="100%" viewBox={"-1 -1 "+(length+2)+" "+ (length+2)} preserveAspectRatio="xMedYMin meet">
+        <svg height="600" width="100%" viewBox={`-1 -1 ${length+2} ${length+2}`} preserveAspectRatio="xMedYMin meet">
           <Defs />
-          <g transform={"translate("+x+","+y+")"} >
+          <g transform={`translate(${x},${y})`} >
             <rect height={length*3} width={length*3} y={-length} x={-length} fill="#ffbd13"/>
             {svgFragments}
           </g>
